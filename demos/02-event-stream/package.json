@@ -1,0 +1,17 @@
+{
+  "name": "demo-02-event-stream",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第02章：流式输出，逐token显示",
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.84.1"
+  },
+  "devDependencies": {
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}

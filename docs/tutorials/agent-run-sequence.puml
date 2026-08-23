@@ -1,0 +1,30 @@
+@startuml
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+participant "用户" as U
+participant "程序" as P
+participant "模型" as M
+participant "文件系统" as F
+
+U -> P: "读取 README.md 并总结"
+activate P
+
+P -> M: Context + tools
+activate M
+M --> P: toolCall: read_file
+deactivate M
+
+P -> F: read_file(README.md)
+activate F
+F --> P: 文件内容
+deactivate F
+
+P -> M: messages (含 toolResult)
+activate M
+M --> P: text: "这是一个..."
+deactivate M
+
+P --> U: 最终回答
+deactivate P
+@enduml

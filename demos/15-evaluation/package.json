@@ -1,0 +1,19 @@
+{
+  "name": "demo-15-evaluation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第15章：评测 — 证明你的Agent能工作",
+  "scripts": {
+    "start": "tsx main.ts",
+    "eval:logic": "tsx main.ts --logic",
+    "eval:capability": "tsx main.ts --capability"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.84.1"
+  },
+  "devDependencies": {
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}

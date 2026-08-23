@@ -1,0 +1,17 @@
+{
+  "name": "demo-01-hello-llm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第01章：30行代码调用一次LLM",
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.84.1"
+  },
+  "devDependencies": {
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}

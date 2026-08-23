@@ -1,0 +1,17 @@
+{
+  "name": "demo-06-tool-use",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第06章：Tool Use — 让LLM调用函数",
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.84.1"
+  },
+  "devDependencies": {
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}
