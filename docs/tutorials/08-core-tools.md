@@ -1,4 +1,4 @@
-# 第 08 章：核心工具 — read / write / edit / bash
+# 第 08 章：核心工具 — read / write / edit / bash / search
 
 > Agent Loop 的骨架有了，但工具还是空的。Coding Agent 最少需要哪些工具？
 
@@ -6,11 +6,11 @@
 
 上一章实现了 Agent Loop — 模型可以连续调用工具直到任务完成。但循环里还没有真正有用的工具。一个 Coding Agent 最少需要什么工具才能干活？
 
-答案是四个：**读文件**、**写文件**、**编辑文件**、**执行命令**。有了这四个，模型就能观察代码、创建文件、修改代码、跑测试。这一章逐个实现它们。
+答案是五个：**读文件**、**写文件**、**编辑文件**、**执行命令**、**搜索文件**。有了这五个，模型就能定位代码、观察内容、创建文件、修改代码、跑测试。这一章逐个实现它们。
 
 ---
 
-## 四工具全景
+## 五工具全景
 
 | 工具 | 职责 | 类比 |
 |------|------|------|
@@ -18,8 +18,9 @@
 | `write_file` | 创建 — 写入新文件 | 新建文件 |
 | `edit_file` | 修改 — 精确替换内容 | 编辑器的查找替换 |
 | `bash` | 执行 — 运行 shell 命令 | 终端 |
+| `search_files` | 搜索 — 定位代码位置 | 全局搜索 |
 
-这四个覆盖了 Coding Agent 的基本操作闭环：先 read 看看现状，用 write 创建或 edit 修改，再 bash 运行验证。
+这五个覆盖了 Coding Agent 的完整操作闭环：先 search 定位目标，read 看看现状，用 write 创建或 edit 修改，再 bash 运行验证。
 
 ---
 
@@ -222,6 +223,50 @@ function truncateOutput(output: string): string {
 
 ---
 
+## search_files：为什么需要专用搜索工具？
+
+模型在修改代码前需要先**找到**目标。`bash` + `grep` 可以做到，但一个专用的搜索工具让模型更容易正确使用：
+
+```typescript
+export const searchFilesTool: MiniTool = {
+  name: "search_files",
+  description: "Search file contents using regex. Returns matching lines with file paths and line numbers.",
+  parameters: {
+    type: "object",
+    properties: {
+      pattern: { type: "string", description: "Regex pattern to search for" },
+      path: { type: "string", description: "Directory to search in (default: current dir)" },
+      include: { type: "string", description: "File glob to include (e.g. '*.ts')" },
+    },
+    required: ["pattern"],
+  },
+  async execute(params) {
+    const dir = params.path ?? ".";
+    const includeFlag = params.include ? `--include='${params.include}'` : "";
+    try {
+      const output = execSync(
+        `grep -rn ${includeFlag} '${params.pattern}' '${dir}' 2>/dev/null | head -50`,
+        { encoding: "utf-8", timeout: 10_000 }
+      );
+      return { content: output || "(no matches)" };
+    } catch {
+      return { content: "(no matches)" };
+    }
+  },
+};
+```
+
+**为什么不让模型直接用 bash + grep？** 四个原因：
+
+- **模型无需记忆 grep 语法** — 参数语义清晰（pattern / path / include），降低出错概率
+- **自动限制结果数量** — `head -50` 防止超长输出撑爆上下文窗口
+- **安全** — 不需要给模型完整 bash 权限就能搜索
+- **工具描述引导工作流** — 模型看到 search_files 的 description 会自然形成"先搜索，再读取，再编辑"的工作模式
+
+搜索工具和 read_file 的 offset/limit 配合使用：先用 search_files 定位到"第 142 行有匹配"，再用 `read_file({ path, offset: 135, limit: 20 })` 读取上下文，最后用 edit_file 精确修改。
+
+---
+
 ## 错误处理的统一哲学
 
 四个工具共享同一条规则：**永远返回 ToolResult，永远不 throw。**
@@ -254,8 +299,9 @@ import { readFileTool } from "./read.js";
 import { writeFileTool } from "./write.js";
 import { editFileTool } from "./edit.js";
 import { bashTool } from "./bash.js";
+import { searchFilesTool } from "./search.js";
 
-export const allTools: MiniTool[] = [readFileTool, writeFileTool, editFileTool, bashTool];
+export const allTools: MiniTool[] = [readFileTool, writeFileTool, editFileTool, bashTool, searchFilesTool];
 ```
 
 `allTools` 传给 AgentConfig 的 `tools` 字段，Agent Loop 遍历它来注册工具 schema 和执行工具。添加新工具只需要实现一个 MiniTool 然后加入这个数组。
@@ -266,7 +312,7 @@ export const allTools: MiniTool[] = [readFileTool, writeFileTool, editFileTool, 
 
 到这里，我们有了一个完整可用的 Coding Agent：
 - Agent Loop 循环引擎（第 07 章）
-- 4 个核心工具（本章）
+- 5 个核心工具（本章）
 - 流式输出（第 02 章）
 - 多模型支持（第 04 章）
 
@@ -274,51 +320,9 @@ export const allTools: MiniTool[] = [readFileTool, writeFileTool, editFileTool, 
 
 ---
 
-## 补充：第五个核心工具 — search_files
-
-实际使用中，Agent 在修改代码前需要先**找到**目标。`bash` + `grep` 可以做到，但一个专用的搜索工具让模型更容易正确使用：
-
-```typescript
-{
-  name: "search_files",
-  description: "Search file contents using regex. Returns matching lines with file paths and line numbers.",
-  parameters: {
-    type: "object",
-    properties: {
-      pattern: { type: "string", description: "Regex pattern to search for" },
-      path: { type: "string", description: "Directory to search in (default: current dir)" },
-      include: { type: "string", description: "File glob to include (e.g. '*.ts')" },
-    },
-    required: ["pattern"],
-  },
-  async execute(params) {
-    const dir = params.path ?? ".";
-    const includeFlag = params.include ? `--include='${params.include}'` : "";
-    try {
-      const output = execSync(
-        `grep -rn ${includeFlag} '${params.pattern}' '${dir}' 2>/dev/null | head -50`,
-        { encoding: "utf-8", timeout: 10_000 }
-      );
-      return { content: output || "(no matches)" };
-    } catch {
-      return { content: "(no matches)" };
-    }
-  },
-}
-```
-
-为什么 search 比 bash+grep 更好？
-
-- **模型无需记忆 grep 语法**——参数语义清晰（pattern / path / include）
-- **自动限制结果数量**——`head -50` 防止超长输出
-- **安全**——不需要给模型完整 bash 权限就能搜索
-- **工具描述**告诉模型什么时候该用它：先搜索，再编辑
-
----
-
 ## 小结
 
-四个工具覆盖了 Coding Agent 的完整操作闭环：read_file 带行号返回方便引用和分段读取，write_file 自动创建父目录减少模型操作步骤，edit_file 用字符串精确匹配避免行号漂移问题，bash 用 timeout 防死循环加中间截断保留有用信息。所有工具共享同一条错误处理原则 — 永远返回 ToolResult 而不 throw，让模型有机会自行修正。
+五个工具覆盖了 Coding Agent 的完整操作闭环：search_files 定位目标代码，read_file 带行号返回方便引用和分段读取，write_file 自动创建父目录减少模型操作步骤，edit_file 用字符串精确匹配避免行号漂移问题，bash 用 timeout 防死循环加中间截断保留有用信息。所有工具共享同一条错误处理原则 — 永远返回 ToolResult 而不 throw，让模型有机会自行修正。
 
 ---
 

@@ -293,13 +293,15 @@ async function runWithRetries(evalCase: EvalCase, config: AgentConfig, n: number
 
 策略 1 更实用——只关心最终输出是否正确，不关心 Agent 选了哪条路。
 
+策略 2（多次运行取通过率）引出一个更精确的问题：跑多次的话，怎么定义"通过"？这就是 Pass@k 和 Pass^k。
+
 ---
 
-## 进阶指标：Pass@k 与 Pass^k
+## Pass@k 与 Pass^k：量化非确定性
 
-简单的 pass/fail 只是起点。业界评估 Agent 能力时用两个补充指标：
+简单的 pass/fail 只是起点。业界评估 Agent 能力时用两个指标来区分"能力"和"可靠性"：
 
-**Pass@k**——跑 k 次，只要有一次通过就算通过。衡量的是 Agent 的**能力上限**（"它能不能做到？"）。
+**Pass@k** — 跑 k 次，只要有一次通过就算通过。衡量的是 Agent 的**能力上限**（"它能不能做到？"）。
 
 ```typescript
 async function passAtK(evalCase: EvalCase, config: AgentConfig, k: number): Promise<boolean> {
@@ -312,7 +314,7 @@ async function passAtK(evalCase: EvalCase, config: AgentConfig, k: number): Prom
 // Pass@5 = 跑 5 次只要有 1 次通过
 ```
 
-**Pass^k**——跑 k 次，必须全部通过才算通过。衡量的是**业务可靠性**（"它可靠吗？"）。
+**Pass^k** — 跑 k 次，必须全部通过才算通过。衡量的是**业务可靠性**（"它可靠吗？"）。
 
 ```typescript
 async function passExpK(evalCase: EvalCase, config: AgentConfig, k: number): Promise<boolean> {
@@ -332,13 +334,13 @@ async function passExpK(evalCase: EvalCase, config: AgentConfig, k: number): Pro
 | Pass@k | 能力存在性 | 技术评估、选模型 |
 | Pass^k | 部署可靠性 | 生产决策、SLA 承诺 |
 
-Agent 可能 Pass@5 = 100% 但 Pass^5 = 30%——它有能力做到，但不够稳定。
+Agent 可能 Pass@5 = 100% 但 Pass^5 = 30%——它有能力做到，但不够稳定。这个区分在选择是否部署 Agent 时至关重要。
 
 ---
 
-## LLM-as-a-Judge：当 verify() 写不出来时
+## 当 verify() 写不出来时：LLM-as-a-Judge
 
-有些任务没有确定性的验证函数——比如"写一段好的文档"。这时可以用另一个 LLM 来判断：
+前面所有例子的 verify 都返回 boolean — 文件存在、测试通过、内容匹配。但有些任务没有确定性的验证函数——比如"写一段好的文档"、"重构这段代码使其更清晰"。这时可以用另一个 LLM 来判断：
 
 ```typescript
 async function llmJudge(
@@ -376,7 +378,7 @@ LLM-as-a-Judge 的注意事项：
 
 ## 小结
 
-评测是系统化验证 Agent 能力的方式。每个 EvalCase 由 prepare（搭建环境）、prompt（给 Agent 的指令）、verify（检查结果）三部分组成。Runner 在隔离的临时目录中执行每个用例。两层评测互补：ScriptedModel 测试 Agent Loop 逻辑（快速、确定性），真实模型测试 Agent 能力（慢、验证结果不验证过程）。评测让你有信心说"我的 Agent 能工作"——不是因为试了一次没报错，而是因为它通过了一组覆盖核心场景的自动化测试。
+评测是系统化验证 Agent 能力的方式。每个 EvalCase 由 prepare（搭建环境）、prompt（给 Agent 的指令）、verify（检查结果）三部分组成。Runner 在隔离的临时目录中执行每个用例。两层评测互补：ScriptedModel 测试 Agent Loop 逻辑（快速、确定性），真实模型测试 Agent 能力（慢、验证结果不验证过程）。面对非确定性，用 Pass@k 衡量能力上限，用 Pass^k 衡量部署可靠性；对于没有确定性 verify 的任务，LLM-as-a-Judge 提供自动化评分。评测让你有信心说"我的 Agent 能工作"——不是因为试了一次没报错，而是因为它通过了一组覆盖核心场景的自动化测试。
 
 ---
 
