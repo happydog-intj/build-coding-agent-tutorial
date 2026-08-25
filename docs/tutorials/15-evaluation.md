@@ -295,6 +295,85 @@ async function runWithRetries(evalCase: EvalCase, config: AgentConfig, n: number
 
 ---
 
+## 进阶指标：Pass@k 与 Pass^k
+
+简单的 pass/fail 只是起点。业界评估 Agent 能力时用两个补充指标：
+
+**Pass@k**——跑 k 次，只要有一次通过就算通过。衡量的是 Agent 的**能力上限**（"它能不能做到？"）。
+
+```typescript
+async function passAtK(evalCase: EvalCase, config: AgentConfig, k: number): Promise<boolean> {
+  for (let i = 0; i < k; i++) {
+    const [result] = await runEval([evalCase], config);
+    if (result.passed) return true;
+  }
+  return false;
+}
+// Pass@5 = 跑 5 次只要有 1 次通过
+```
+
+**Pass^k**——跑 k 次，必须全部通过才算通过。衡量的是**业务可靠性**（"它可靠吗？"）。
+
+```typescript
+async function passExpK(evalCase: EvalCase, config: AgentConfig, k: number): Promise<boolean> {
+  for (let i = 0; i < k; i++) {
+    const [result] = await runEval([evalCase], config);
+    if (!result.passed) return false;
+  }
+  return true;
+}
+// Pass^5 = 跑 5 次必须全部通过
+```
+
+两者的区别至关重要：
+
+| 指标 | 含义 | 适用场景 |
+|------|------|----------|
+| Pass@k | 能力存在性 | 技术评估、选模型 |
+| Pass^k | 部署可靠性 | 生产决策、SLA 承诺 |
+
+Agent 可能 Pass@5 = 100% 但 Pass^5 = 30%——它有能力做到，但不够稳定。
+
+---
+
+## LLM-as-a-Judge：当 verify() 写不出来时
+
+有些任务没有确定性的验证函数——比如"写一段好的文档"。这时可以用另一个 LLM 来判断：
+
+```typescript
+async function llmJudge(
+  task: string,
+  agentOutput: string,
+  judgeModel: any,
+): Promise<{ score: number; reason: string }> {
+  const judgePrompt = `You are evaluating an AI agent's output.
+
+Task: ${task}
+
+Agent's output:
+${agentOutput}
+
+Rate 1-5 and explain:
+1 = completely wrong
+3 = partially correct
+5 = fully correct and well done
+
+Reply as JSON: {"score": N, "reason": "..."}`;
+
+  // 调用 judge 模型
+  const response = await judgeModel.complete(judgePrompt);
+  return JSON.parse(response);
+}
+```
+
+LLM-as-a-Judge 的注意事项：
+- **用比被评估模型更强的模型做 judge**（或至少同级）
+- **给明确的评分标准**——不要让 judge 自己发明标准
+- **多次打分取平均**——单次 judge 也有随机性
+- **区分"做对了"和"做得好"**——功能正确 vs 代码质量是不同维度
+
+---
+
 ## 小结
 
 评测是系统化验证 Agent 能力的方式。每个 EvalCase 由 prepare（搭建环境）、prompt（给 Agent 的指令）、verify（检查结果）三部分组成。Runner 在隔离的临时目录中执行每个用例。两层评测互补：ScriptedModel 测试 Agent Loop 逻辑（快速、确定性），真实模型测试 Agent 能力（慢、验证结果不验证过程）。评测让你有信心说"我的 Agent 能工作"——不是因为试了一次没报错，而是因为它通过了一组覆盖核心场景的自动化测试。

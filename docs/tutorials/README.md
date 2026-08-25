@@ -1,6 +1,6 @@
 # 从零构建 Coding Agent — 教程目录
 
-> 16 章渐进式教程，从 "30 行调用一次 LLM" 到 "750 行完整 Coding Agent"。
+> 18 章渐进式教程，从 "30 行调用一次 LLM" 到 "750 行完整 Coding Agent"。
 >
 > 核心公式：**Coding Agent = LLM + Protocol + Loop + Tools + State**
 
@@ -17,7 +17,7 @@ Part 0  序章（1 章）        — 建立全局心智模型
 Part I  模型与协议（5 章）  — 从调用到协议边界
 Part II 工具与循环（3 章）  — 闭合 Agent 核心
 Part III 持久与可靠（4 章） — 让 Agent 可靠
-Part IV 扩展与验证（3 章） — 从核心到产品
+Part IV 扩展与验证（5 章） — 从核心到产品
 ```
 
 ---
@@ -70,6 +70,16 @@ Part IV 扩展与验证（3 章） — 从核心到产品
 | 13 | [扩展系统 — 不污染核心的产品化](./13-extension-system.md) | 如何在不修改 Agent Loop 代码的前提下添加新能力？ |
 | 14 | [打磨 — 从 Demo 到可用产品](./14-polish.md) | 如何让 agent 从"能跑"变成"好用"？ |
 | 15 | [评测 — 证明你的 Agent 能工作](./15-evaluation.md) | 如何客观验证 agent 的能力？ |
+| 16 | [System Prompt 工程 — 从一行字符串到结构化指令](./16-system-prompt-engineering.md) | 如何设计好的 system prompt？如何防注入？ |
+| 17 | [Harness 工程 — 模型不可靠时的工程补救](./17-harness.md) | 模型会幻觉、死循环、过早终止，怎么办？ |
+
+---
+
+## 附录
+
+| # | 标题 | 说明 |
+|---|------|------|
+| — | [推荐阅读 — 下一步](./18-further-reading.md) | 超出本教程范围的高级话题指引 |
 
 ---
 
@@ -89,6 +99,8 @@ Part IV 扩展与验证（3 章） — 从核心到产品
                                           12 上下文管理 → 13 扩展系统
                                                               ↓
                                                     14 打磨 → 15 评测
+                                                              ↓
+                                          16 System Prompt 工程 → 17 Harness 工程
 ```
 
 ## 每章结构

@@ -274,6 +274,48 @@ export const allTools: MiniTool[] = [readFileTool, writeFileTool, editFileTool, 
 
 ---
 
+## 补充：第五个核心工具 — search_files
+
+实际使用中，Agent 在修改代码前需要先**找到**目标。`bash` + `grep` 可以做到，但一个专用的搜索工具让模型更容易正确使用：
+
+```typescript
+{
+  name: "search_files",
+  description: "Search file contents using regex. Returns matching lines with file paths and line numbers.",
+  parameters: {
+    type: "object",
+    properties: {
+      pattern: { type: "string", description: "Regex pattern to search for" },
+      path: { type: "string", description: "Directory to search in (default: current dir)" },
+      include: { type: "string", description: "File glob to include (e.g. '*.ts')" },
+    },
+    required: ["pattern"],
+  },
+  async execute(params) {
+    const dir = params.path ?? ".";
+    const includeFlag = params.include ? `--include='${params.include}'` : "";
+    try {
+      const output = execSync(
+        `grep -rn ${includeFlag} '${params.pattern}' '${dir}' 2>/dev/null | head -50`,
+        { encoding: "utf-8", timeout: 10_000 }
+      );
+      return { content: output || "(no matches)" };
+    } catch {
+      return { content: "(no matches)" };
+    }
+  },
+}
+```
+
+为什么 search 比 bash+grep 更好？
+
+- **模型无需记忆 grep 语法**——参数语义清晰（pattern / path / include）
+- **自动限制结果数量**——`head -50` 防止超长输出
+- **安全**——不需要给模型完整 bash 权限就能搜索
+- **工具描述**告诉模型什么时候该用它：先搜索，再编辑
+
+---
+
 ## 小结
 
 四个工具覆盖了 Coding Agent 的完整操作闭环：read_file 带行号返回方便引用和分段读取，write_file 自动创建父目录减少模型操作步骤，edit_file 用字符串精确匹配避免行号漂移问题，bash 用 timeout 防死循环加中间截断保留有用信息。所有工具共享同一条错误处理原则 — 永远返回 ToolResult 而不 throw，让模型有机会自行修正。

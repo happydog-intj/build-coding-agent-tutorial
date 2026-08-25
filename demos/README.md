@@ -21,6 +21,8 @@
 | `13-extension-system/` | 第 13 章 | ✅ | 扩展点：权限拦截 + 结果变换 + 事件 |
 | `14-polish/` | 第 14 章 | ✅ | 完整 CLI 产品（Banner / 颜色 / 持久化）|
 | `15-evaluation/` | 第 15 章 | ❌* | 自动化评测两层体系 |
+| `16-system-prompt/` | 第 16 章 | ❌ | 结构化 prompt + 状态栏 + 防注入 |
+| `17-harness/` | 第 17 章 | ❌ | 重试 / 验证 / 防死循环 / Proposer-Reviewer |
 
 ## 快速开始
 
@@ -42,7 +44,7 @@ OPENAI_API_KEY=sk-xxx npx tsx main.ts
 
 建议按顺序阅读教程文档（`docs/tutorials/`），同时运行对应的 demo 加深理解。
 
-第 05 章（Mock Testing）和第 12 章（Context Management）不需要 API key，适合离线学习。
+第 05 章（Mock Testing）、第 12 章（Context Management）、第 16 章（System Prompt）和第 17 章（Harness）不需要 API key，适合离线学习。
 
 第 15 章（Evaluation）的逻辑评测层不需要 API key（标注 ❌*），能力评测层可选需要 key。
 

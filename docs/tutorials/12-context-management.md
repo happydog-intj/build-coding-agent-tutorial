@@ -212,6 +212,33 @@ Pi 完整版中这一步通过 `transformContext` 回调实现 — Agent Loop �
 
 ---
 
+## 补充：为什么"前缀稳定"很重要 — KV Cache 与 Prompt Cache
+
+你可能注意到我们的截断策略总是保留 system prompt 和最新的消息，只从中间裁剪旧历史。这不仅是"保留最相关信息"的考虑，还有一个底层原因：**Prompt Cache**。
+
+### 什么是 Prompt Cache？
+
+LLM 推理时对每个 token 计算 Key-Value 向量（KV Cache）。如果你多次调用 API，而每次请求的**前缀部分相同**，服务端可以复用已经计算好的 KV Cache，节省大量计算（Anthropic 的 Prompt Cache 可减少 90% 的延迟和费用）。
+
+```
+请求 1: [system prompt] + [msg 1-5]           → 完整计算
+请求 2: [system prompt] + [msg 1-5] + [msg 6] → 前缀命中缓存，只需计算 msg 6
+请求 3: [system prompt] + [msg 3-6]           → 前缀不匹配！无法使用缓存
+```
+
+### 对截断策略的影响
+
+这就是为什么：
+
+1. **System prompt 放最前面且不变**——它是每次请求都相同的前缀
+2. **从中间截断，不从头截断**——保持前缀稳定
+3. **状态栏放在 system prompt 末尾**——它每轮变化，所以放在稳定前缀之后
+4. **截断粒度要以完整交互为单位**——如果从任意位置截断，后续 token 的位置编码全变，缓存失效
+
+一句话总结：**保持前缀稳定 = 省钱 + 快。** 这是 API 费用优化和延迟优化的关键，也是为什么 Agent 的上下文管理不能随便"从前面丢消息"。
+
+---
+
 ## 小结
 
 上下文窗口管理的核心是区分 Session（完整历史，不动）和 Context（每次调用临时构建，可截断）。截断以"不可拆分的交互"为最小单位 — toolCall 和 toolResult 必须成对保留或丢弃。从后向前按预算保留最近的交互，被截断的旧历史可以压缩成摘要注入 system prompt。整个过程不修改 Session，保证从任意时刻都能重建不同的 Context。

@@ -1,0 +1,17 @@
+{
+  "name": "demo-17-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第17章：Harness工程 — 重试/验证/防死循环/Proposer-Reviewer",
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.84.1"
+  },
+  "devDependencies": {
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}
