@@ -165,9 +165,23 @@ export default defineConfig({
         ],
       },
       {
+        text: "Part V · 生产级特性",
+        items: [
+          { text: "18. 权限系统", link: "/tutorials/18-permission-system" },
+          { text: "19. Hooks 事件系统", link: "/tutorials/19-hooks-system" },
+          { text: "20. CLI 工具扩展", link: "/tutorials/20-cli-tools" },
+          {
+            text: "21. 并行执行与成本控制",
+            link: "/tutorials/21-parallel-and-cost",
+          },
+          { text: "22. 跨会话记忆", link: "/tutorials/22-memory-system" },
+          { text: "23. 多 Agent 协作", link: "/tutorials/23-multi-agent" },
+        ],
+      },
+      {
         text: "附录",
         items: [
-          { text: "推荐阅读", link: "/tutorials/18-further-reading" },
+          { text: "推荐阅读", link: "/tutorials/24-further-reading" },
           { text: "FAQ", link: "/faq" },
         ],
       },
