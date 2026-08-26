@@ -1,3 +1,8 @@
+---
+title: "核心工具 — read / write / edit / bash / search"
+description: "实现 Coding Agent 五个核心工具：读文件、写文件、编辑文件、执行命令、搜索代码"
+---
+
 # 第 08 章：核心工具 — read / write / edit / bash / search
 
 > Agent Loop 的骨架有了，但工具还是空的。Coding Agent 最少需要哪些工具？

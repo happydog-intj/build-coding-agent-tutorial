@@ -1,3 +1,8 @@
+---
+title: "模拟测试 — 不花钱验证 Agent 逻辑"
+description: "用 ScriptedModel 预设响应做确定性测试，零 API 费用验证 Agent Loop 行为"
+---
+
 # 第 05 章：模拟测试 — 不花钱验证 Agent 逻辑
 
 > 每次测试都要调真实 API？太慢、太贵、还不可复现。怎样脱离真模型验证 Agent 的逻辑？

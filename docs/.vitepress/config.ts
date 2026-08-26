@@ -1,15 +1,87 @@
 import { defineConfig } from "vitepress";
 
+const SITE_URL = "https://happydog-intj.github.io/build-coding-agent-tutorial";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 export default defineConfig({
   title: "从零构建 Coding Agent",
-  description: "18 章渐进式教程，从 30 行调用一次 LLM 到 750 行完整 Coding Agent",
+  description:
+    "18 章渐进式教程，从 30 行调用一次 LLM 到 750 行完整 Coding Agent。学习 Agent Loop、Tool Use、上下文管理等核心原理。",
   lang: "zh-CN",
   base: "/build-coding-agent-tutorial/",
+
+  sitemap: {
+    hostname: "https://happydog-intj.github.io",
+    transformItems(items) {
+      return items.map((item) => ({
+        ...item,
+        url: `build-coding-agent-tutorial/${item.url}`,
+      }));
+    },
+  },
+
+  head: [
+    // Open Graph
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:locale", content: "zh_CN" }],
+    ["meta", { property: "og:site_name", content: "从零构建 Coding Agent" }],
+    ["meta", { property: "og:image", content: OG_IMAGE }],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content:
+          "18 章渐进式 TypeScript 教程，从零实现一个能读文件、写代码、跑测试的 AI Coding Agent",
+      },
+    ],
+    // Twitter Card
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:image", content: OG_IMAGE }],
+    // SEO
+    [
+      "meta",
+      {
+        name: "keywords",
+        content:
+          "Coding Agent,AI Agent,LLM,Agent Loop,Tool Use,Claude Code,Cursor,TypeScript,教程,从零构建",
+      },
+    ],
+    ["meta", { name: "author", content: "happydog-intj" }],
+    // JSON-LD structured data
+    [
+      "script",
+      { type: "application/ld+json" },
+      JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Course",
+        name: "从零构建 Coding Agent",
+        description:
+          "18 章渐进式 TypeScript 教程，从 30 行调用 LLM 到 750 行完整 Coding Agent",
+        provider: {
+          "@type": "Organization",
+          name: "happydog-intj",
+          url: "https://github.com/happydog-intj",
+        },
+        educationalLevel: "Intermediate",
+        programmingLanguage: "TypeScript",
+        inLanguage: "zh-CN",
+        isAccessibleForFree: true,
+        url: SITE_URL,
+        numberOfCredits: 18,
+        hasCourseInstance: {
+          "@type": "CourseInstance",
+          courseMode: "online",
+          courseWorkload: "PT20H",
+        },
+      }),
+    ],
+  ],
 
   themeConfig: {
     nav: [
       { text: "教程", link: "/tutorials/00-observe-full-run" },
       { text: "Demo", link: "/demos" },
+      { text: "FAQ", link: "/faq" },
       {
         text: "GitHub",
         link: "https://github.com/happydog-intj/build-coding-agent-tutorial",
@@ -46,7 +118,10 @@ export default defineConfig({
         text: "Part II · 工具与循环",
         items: [
           { text: "06. Tool Use 工具调用", link: "/tutorials/06-tool-use" },
-          { text: "07. Agent Loop 循环引擎", link: "/tutorials/07-agent-loop" },
+          {
+            text: "07. Agent Loop 循环引擎",
+            link: "/tutorials/07-agent-loop",
+          },
           { text: "08. 核心工具", link: "/tutorials/08-core-tools" },
         ],
       },
@@ -85,6 +160,7 @@ export default defineConfig({
         text: "附录",
         items: [
           { text: "推荐阅读", link: "/tutorials/18-further-reading" },
+          { text: "FAQ", link: "/faq" },
         ],
       },
     ],

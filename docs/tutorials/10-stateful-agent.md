@@ -1,3 +1,8 @@
+---
+title: "有状态 Agent — abort、steering 与重入保护"
+description: "处理 Ctrl+C 中断、运行中注入新指令、防止并发重入的状态管理"
+---
+
 # 第 10 章：有状态 Agent — abort、steering 与重入
 
 > 用户按了 Ctrl+C 怎么办？运行中如何注入新指令？

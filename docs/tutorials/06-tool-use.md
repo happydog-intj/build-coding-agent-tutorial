@@ -1,3 +1,8 @@
+---
+title: "Tool Use — 让 LLM 调用函数"
+description: "实现 LLM 工具调用协议：JSON Schema 声明工具、tool_call 请求、tool_result 配对返回"
+---
+
 # 第 06 章：Tool Use 工具调用 — 让 LLM 调用函数
 
 > LLM 只能生成文本，怎样让它"做事"？

@@ -1,3 +1,8 @@
+---
+title: "Hello LLM — 用 TypeScript 调用大模型"
+description: "30 行 TypeScript 代码调用 Anthropic Claude / OpenAI GPT API 并获取回复"
+---
+
 # 第 01 章：Hello LLM — 30 行代码调用大模型
 
 > 怎样用代码调用一次 LLM，拿到它的回复？这是构建 Agent 的第一步。

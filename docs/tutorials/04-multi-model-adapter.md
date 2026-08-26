@@ -1,3 +1,8 @@
+---
+title: "多模型适配 — 一套代码切换 Anthropic 和 OpenAI"
+description: "用适配器模式实现 Anthropic Claude 和 OpenAI GPT 的统一调用接口"
+---
+
 # 第 04 章：多模型适配 — 一套代码切换不同厂商
 
 > Anthropic 和 OpenAI 的 API 格式完全不同，怎样用同一套代码无缝切换？

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# AI crawlers - explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://happydog-intj.github.io/build-coding-agent-tutorial/sitemap.xml

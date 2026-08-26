@@ -1,3 +1,8 @@
+---
+title: "System Prompt 工程 — 结构化指令与防注入"
+description: "设计结构化 System Prompt：分段组织、动态注入 Agent Status Bar、防止 prompt injection"
+---
+
 # 第 16 章：System Prompt 工程 — 从一行字符串到结构化指令
 
 > 你的 Agent 只有一行 system prompt："You are a coding assistant."——但真正的产品级 Agent 的 system prompt 有上百行。差在哪？

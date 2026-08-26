@@ -1,3 +1,8 @@
+---
+title: "流式输出 — EventStream 逐 token 显示"
+description: "使用 Server-Sent Events 实现 LLM 流式输出，逐 token 实时显示响应"
+---
+
 # 第 02 章：EventStream 事件流 — 流式输出的秘密
 
 > 等 10 秒才看到回复太痛苦了，怎样让模型的回答逐字显示出来？

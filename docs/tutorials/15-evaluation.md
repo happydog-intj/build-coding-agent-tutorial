@@ -1,3 +1,8 @@
+---
+title: "Agent 评测 — 自动化验证 Agent 能力"
+description: "用 EvalCase (prepare/prompt/verify) 结构实现 Agent 自动化评测，包括 Pass@k 指标和 LLM-as-Judge"
+---
+
 # 第 15 章：评测 — 证明你的 Agent 能工作
 
 > "我试了一次能跑"不是可靠性的证明。怎么系统化地验证 Agent 能解决编程任务？

@@ -1,3 +1,8 @@
+---
+title: "上下文窗口管理 — 按预算重建 Context"
+description: "区分 Session 和 Context，按 token 预算从后往前保留消息，利用 Prompt Cache 优化性能"
+---
+
 # 第 12 章：上下文窗口管理 — 历史不动，上下文按预算重建
 
 > 对话越来越长，超出模型的上下文窗口怎么办？

@@ -1,3 +1,8 @@
+---
+title: "Harness 工程 — 重试、验证与防死循环"
+description: "应对 LLM 幻觉和不可靠性：最大迭代数、连续错误检测、输出验证、Proposer-Reviewer 模式"
+---
+
 # 第 17 章：Harness 工程 — 模型不可靠时的工程补救
 
 > 模型会幻觉、会死循环、会过早结束任务。Harness 是 Agent Loop 外层的控制层——确保模型行为符合预期。

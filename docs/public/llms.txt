@@ -1,0 +1,47 @@
+# 从零构建 Coding Agent
+
+> 18 章渐进式 TypeScript 教程，教你从零实现一个完整的 AI Coding Agent。
+
+## 这是什么
+
+一套完整的教程，解释 Claude Code、Cursor、Cline 等 AI 编程助手背后的核心原理，并带你用 TypeScript 从零实现一个 750 行的 Coding Agent。
+
+## 核心概念
+
+- **Coding Agent = LLM + Protocol + Loop + Tools + State**
+- Agent Loop：while 循环中调用 LLM → 检查是否有 tool_call → 执行工具 → 把结果放回消息 → 重复，直到模型不再调用工具
+- Tool Use Protocol：模型输出 JSON 格式的工具调用请求，程序执行后返回 tool_result
+- 核心工具：read_file、write_file、edit_file、bash、search_files
+- 上下文管理：Session（完整历史不动）vs Context（每次调用按预算重建）
+
+## 章节列表
+
+- 00: 观察一次完整的 Agent 运行
+- 01: Hello LLM — 30 行代码调用大模型
+- 02: EventStream — 流式输出的秘密
+- 03: 多轮对话 — 消息协议与记忆
+- 04: 多模型适配 — 一套代码切换不同厂商
+- 05: 模拟测试 — 不花钱验证 Agent 逻辑
+- 06: Tool Use — 让 LLM 调用函数
+- 07: Agent Loop — 从一次调用到自主循环
+- 08: 核心工具 — read / write / edit / bash / search
+- 09: 会话持久化 — JSONL 崩溃安全存储
+- 10: 有状态 Agent — abort、steering 与重入
+- 11: 会话树 — 分支、回溯与 DAG
+- 12: 上下文窗口管理 — 历史不动，上下文按预算重建
+- 13: 扩展系统 — 不污染核心的产品化
+- 14: 打磨 — 从 Demo 到可用产品
+- 15: 评测 — 证明你的 Agent 能工作
+- 16: System Prompt 工程 — 结构化指令与防注入
+- 17: Harness 工程 — 模型不可靠时的工程补救
+- 18: 推荐阅读 — 下一步
+
+## 适合谁
+
+有 TypeScript/Node.js 基础、用过 ChatGPT 但没写过 Agent、想理解 AI 编程工具原理的开发者。
+
+## 链接
+
+- 在线阅读: https://happydog-intj.github.io/build-coding-agent-tutorial/
+- GitHub: https://github.com/happydog-intj/build-coding-agent-tutorial
+- PDF 下载: https://github.com/happydog-intj/build-coding-agent-tutorial/blob/main/releases/build-coding-agent-tutorial.pdf

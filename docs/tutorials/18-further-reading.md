@@ -1,3 +1,8 @@
+---
+title: "推荐阅读 — Agent 进阶话题指引"
+description: "超出本教程范围的高级话题：RAG、多 Agent 协作、模型后训练、Computer Use"
+---
+
 # 推荐阅读 — 下一步
 
 > 本教程覆盖了 Coding Agent 的核心机制。以下是超出本教程范围、但值得深入了解的高级话题。

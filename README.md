@@ -1,12 +1,16 @@
-# Mini Pi Coding Agent
+# 从零构建 Coding Agent — TypeScript 教程
 
-> 从零构建 Coding Agent — 18 章渐进式教程 + 17 个可运行 Demo
+[![GitHub stars](https://img.shields.io/github/stars/happydog-intj/build-coding-agent-tutorial?style=social)](https://github.com/happydog-intj/build-coding-agent-tutorial)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Pages](https://img.shields.io/badge/在线阅读-GitHub%20Pages-brightgreen)](https://happydog-intj.github.io/build-coding-agent-tutorial/)
 
-📖 **[在线阅读](https://happydog-intj.github.io/build-coding-agent-tutorial/)** · 📥 **[下载 PDF](./releases/build-coding-agent-tutorial.pdf)**
+> 18 章渐进式教程 + 17 个可运行 Demo，理解 Claude Code / Cursor / Cline 背后的原理
+
+📖 **[在线阅读](https://happydog-intj.github.io/build-coding-agent-tutorial/)** · 📥 **[下载 PDF](./releases/build-coding-agent-tutorial.pdf)** · 💬 **[FAQ](https://happydog-intj.github.io/build-coding-agent-tutorial/faq)**
 
 ---
 
-一个最小化的 Coding Agent 实现，展示从零构建 AI 编程助手的核心原理。
+用 TypeScript 从零实现一个完整的 AI Coding Agent（750 行），逐步讲解 Agent Loop、Tool Use、上下文管理、评测体系等核心原理。
 
 ## 快速开始
 
