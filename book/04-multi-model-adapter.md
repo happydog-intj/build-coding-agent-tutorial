@@ -1,0 +1,1 @@
+../docs/tutorials/04-multi-model-adapter.md

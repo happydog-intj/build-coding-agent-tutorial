@@ -1,5 +1,11 @@
 # Mini Pi Coding Agent
 
+> 从零构建 Coding Agent — 18 章渐进式教程 + 17 个可运行 Demo
+
+📖 **[在线阅读](https://happydog-intj.github.io/build-coding-agent-tutorial/)** · 📥 **[下载 PDF](./releases/build-coding-agent-tutorial.pdf)**
+
+---
+
 一个最小化的 Coding Agent 实现，展示从零构建 AI 编程助手的核心原理。
 
 ## 快速开始

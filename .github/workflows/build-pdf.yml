@@ -1,0 +1,54 @@
+name: Build PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/tutorials/**"
+      - "book/**"
+      - "book.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mdBook
+        run: |
+          mkdir -p $HOME/.local/bin
+          curl -sSL https://github.com/rust-lang/mdBook/releases/latest/download/mdbook-v0.4.44-x86_64-unknown-linux-gnu.tar.gz | tar xz -C $HOME/.local/bin
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install mdbook-pdf
+        run: |
+          curl -sSL https://github.com/nicoulaj/mdbook-pdf/releases/download/v0.1.11/mdbook-pdf-x86_64-unknown-linux-gnu.tar.gz | tar xz -C $HOME/.local/bin
+          # mdbook-pdf needs chromium
+          sudo apt-get update && sudo apt-get install -y chromium-browser
+
+      - name: Build PDF
+        run: |
+          # Add pdf output to book.toml
+          cat >> book.toml << 'EOF'
+
+          [output.pdf]
+          trying-resolve-before-build = true
+          EOF
+          mdbook build
+
+      - name: Copy PDF to releases/
+        run: |
+          mkdir -p releases
+          cp book-output/pdf/output.pdf releases/build-coding-agent-tutorial.pdf
+
+      - name: Commit PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add releases/build-coding-agent-tutorial.pdf
+          git diff --cached --quiet || git commit -m "chore: update PDF [skip ci]"
+          git push

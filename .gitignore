@@ -4,3 +4,6 @@ dist/
 .omc/
 .DS_Store
 *.log
+book-output/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
