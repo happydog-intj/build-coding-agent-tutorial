@@ -1,6 +1,9 @@
 import { defineConfig } from "vitepress";
 
-const SITE_URL = "https://happydog-intj.github.io/build-coding-agent-tutorial";
+const isVercel = !!process.env.VERCEL;
+const SITE_URL = isVercel
+  ? "https://build-coding-agent-tutorial.vercel.app"
+  : "https://happydog-intj.github.io/build-coding-agent-tutorial";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default defineConfig({
@@ -8,11 +11,14 @@ export default defineConfig({
   description:
     "18 章渐进式教程，从 30 行调用一次 LLM 到 750 行完整 Coding Agent。学习 Agent Loop、Tool Use、上下文管理等核心原理。",
   lang: "zh-CN",
-  base: "/build-coding-agent-tutorial/",
+  base: isVercel ? "/" : "/build-coding-agent-tutorial/",
 
   sitemap: {
-    hostname: "https://happydog-intj.github.io",
+    hostname: isVercel
+      ? "https://build-coding-agent-tutorial.vercel.app"
+      : "https://happydog-intj.github.io",
     transformItems(items) {
+      if (isVercel) return items;
       return items.map((item) => ({
         ...item,
         url: `build-coding-agent-tutorial/${item.url}`,
