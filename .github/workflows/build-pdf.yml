@@ -5,8 +5,7 @@ on:
     branches: [main]
     paths:
       - "docs/tutorials/**"
-      - "book/**"
-      - "book.toml"
+      - ".github/workflows/build-pdf.yml"
   workflow_dispatch:
 
 permissions:
@@ -18,32 +17,50 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install mdBook
+      - name: Install dependencies
         run: |
-          mkdir -p $HOME/.local/bin
-          curl -sSL https://github.com/rust-lang/mdBook/releases/latest/download/mdbook-v0.4.44-x86_64-unknown-linux-gnu.tar.gz | tar xz -C $HOME/.local/bin
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-lang-chinese fonts-noto-cjk
 
-      - name: Install mdbook-pdf
-        run: |
-          curl -sSL https://github.com/nicoulaj/mdbook-pdf/releases/download/v0.1.11/mdbook-pdf-x86_64-unknown-linux-gnu.tar.gz | tar xz -C $HOME/.local/bin
-          # mdbook-pdf needs chromium
-          sudo apt-get update && sudo apt-get install -y chromium-browser
-
-      - name: Build PDF
-        run: |
-          # Add pdf output to book.toml
-          cat >> book.toml << 'EOF'
-
-          [output.pdf]
-          trying-resolve-before-build = true
-          EOF
-          mdbook build
-
-      - name: Copy PDF to releases/
+      - name: Build PDF with pandoc
         run: |
           mkdir -p releases
-          cp book-output/pdf/output.pdf releases/build-coding-agent-tutorial.pdf
+          # Concatenate all tutorial files in order
+          cat \
+            docs/tutorials/00-observe-full-run.md \
+            docs/tutorials/01-hello-llm.md \
+            docs/tutorials/02-event-stream.md \
+            docs/tutorials/03-multi-turn.md \
+            docs/tutorials/04-multi-model-adapter.md \
+            docs/tutorials/05-mock-testing.md \
+            docs/tutorials/06-tool-use.md \
+            docs/tutorials/07-agent-loop.md \
+            docs/tutorials/08-core-tools.md \
+            docs/tutorials/09-session-persistence.md \
+            docs/tutorials/10-stateful-agent.md \
+            docs/tutorials/11-session-tree.md \
+            docs/tutorials/12-context-management.md \
+            docs/tutorials/13-extension-system.md \
+            docs/tutorials/14-polish.md \
+            docs/tutorials/15-evaluation.md \
+            docs/tutorials/16-system-prompt-engineering.md \
+            docs/tutorials/17-harness.md \
+            docs/tutorials/18-further-reading.md \
+            > /tmp/all-chapters.md
+
+          pandoc /tmp/all-chapters.md \
+            -o releases/build-coding-agent-tutorial.pdf \
+            --pdf-engine=xelatex \
+            -V mainfont="Noto Sans CJK SC" \
+            -V monofont="Noto Sans Mono CJK SC" \
+            -V geometry:margin=2.5cm \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            --toc \
+            --toc-depth=2 \
+            -V toc-title="目录" \
+            --highlight-style=tango \
+            -V CJKmainfont="Noto Sans CJK SC"
 
       - name: Commit PDF
         run: |
