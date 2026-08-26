@@ -6,7 +6,7 @@
 
 > 18 章渐进式教程 + 17 个可运行 Demo，理解 Claude Code / Cursor / Cline 背后的原理
 
-📖 **[在线阅读](https://happydog-intj.github.io/build-coding-agent-tutorial/)** · 📥 **[下载 PDF](./releases/build-coding-agent-tutorial.pdf)** · 💬 **[FAQ](https://happydog-intj.github.io/build-coding-agent-tutorial/faq)**
+📖 **[在线阅读](https://happydog-intj.github.io/build-coding-agent-tutorial/)** · 🪞 **[国内镜像](https://build-coding-agent-tutorial.vercel.app)** · 📥 **[下载 PDF](./releases/build-coding-agent-tutorial.pdf)** · 💬 **[FAQ](https://happydog-intj.github.io/build-coding-agent-tutorial/faq)**
 
 ---
 
