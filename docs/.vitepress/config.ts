@@ -27,6 +27,8 @@ export default defineConfig({
   },
 
   head: [
+    // Site verification
+    ["meta", { name: "baidu-site-verification", content: "codeva-z0JBLbADMe" }],
     // Open Graph
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:locale", content: "zh_CN" }],
