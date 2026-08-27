@@ -1,11 +1,11 @@
 ---
 layout: home
-title: "从零构建 Coding Agent — TypeScript 教程"
-description: "18 章渐进式教程，从 30 行调用 LLM 到 750 行完整 Coding Agent。理解 Claude Code、Cursor 背后的原理。"
+title: "从零实现 AI Coding Agent：理解 Claude Code 原理的 24 章实战教程"
+description: "手写 AI 编程智能体：从 30 行到 750 行，用 TypeScript 复刻 Claude Code 核心原理。涵盖 Agent Loop、Tool Use、上下文管理、权限系统、多 Agent 协作。"
 hero:
-  name: 从零构建 Coding Agent
-  text: 18 章渐进式 TypeScript 教程
-  tagline: 从 "30 行调用一次 LLM" 到 "750 行完整 Coding Agent"
+  name: 从零实现 AI Coding Agent
+  text: 理解 Claude Code 原理的 24 章实战教程
+  tagline: 手写 AI 编程智能体 — 从 "30 行调用一次 LLM" 到 "750 行完整 Coding Agent"
   actions:
     - theme: brand
       text: 开始阅读 →

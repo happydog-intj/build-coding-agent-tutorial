@@ -1,5 +1,5 @@
 ---
-description: "关于从零构建 Coding Agent 教程的常见问题：Agent Loop 原理、工具调用机制、上下文管理等"
+description: "关于从零实现 AI Coding Agent 教程的常见问题：Claude Code 原理、Agent Loop、工具调用机制、上下文管理等"
 ---
 
 # 常见问题 FAQ

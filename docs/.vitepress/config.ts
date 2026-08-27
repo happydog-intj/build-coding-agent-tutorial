@@ -7,9 +7,9 @@ const SITE_URL = isVercel
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default defineConfig({
-  title: "从零构建 Coding Agent",
+  title: "从零实现 AI Coding Agent",
   description:
-    "18 章渐进式教程，从 30 行调用一次 LLM 到 750 行完整 Coding Agent。学习 Agent Loop、Tool Use、上下文管理等核心原理。",
+    "理解 Claude Code 原理的 24 章实战教程。从 30 行调用 LLM 到 750 行完整 AI 编程智能体，手写实现 Agent Loop、Tool Use、上下文管理。TypeScript 实现。",
   lang: "zh-CN",
   base: isVercel ? "/" : "/build-coding-agent-tutorial/",
 
@@ -32,18 +32,21 @@ export default defineConfig({
     // Open Graph
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:locale", content: "zh_CN" }],
-    ["meta", { property: "og:site_name", content: "从零构建 Coding Agent" }],
+    ["meta", { property: "og:site_name", content: "从零实现 AI Coding Agent" }],
+    ["meta", { property: "og:title", content: "从零实现 AI Coding Agent：理解 Claude Code 原理的 24 章实战教程" }],
     ["meta", { property: "og:image", content: OG_IMAGE }],
     [
       "meta",
       {
         property: "og:description",
         content:
-          "18 章渐进式 TypeScript 教程，从零实现一个能读文件、写代码、跑测试的 AI Coding Agent",
+          "手写 AI 编程智能体：从 30 行到 750 行，用 TypeScript 复刻 Claude Code 核心原理。涵盖 Agent Loop、Tool Use、上下文管理、权限系统、多 Agent 协作。",
       },
     ],
     // Twitter Card
     ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:title", content: "从零实现 AI Coding Agent：理解 Claude Code 原理的 24 章实战教程" }],
+    ["meta", { name: "twitter:description", content: "手写 AI 编程智能体：从 30 行到 750 行，用 TypeScript 复刻 Claude Code 核心原理" }],
     ["meta", { name: "twitter:image", content: OG_IMAGE }],
     // SEO
     [
@@ -51,7 +54,7 @@ export default defineConfig({
       {
         name: "keywords",
         content:
-          "Coding Agent,AI Agent,LLM,Agent Loop,Tool Use,Claude Code,Cursor,TypeScript,教程,从零构建",
+          "AI Coding Agent,从零实现,AI Agent,智能体,AI编程,Claude Code 原理,Cursor 原理,Agent Loop,Tool Use,TypeScript,手写AI Agent,LLM Agent,编程智能体,agentic coding",
       },
     ],
     ["meta", { name: "author", content: "happydog-intj" }],
@@ -62,9 +65,9 @@ export default defineConfig({
       JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Course",
-        name: "从零构建 Coding Agent",
+        name: "从零实现 AI Coding Agent：理解 Claude Code 原理的 24 章实战教程",
         description:
-          "18 章渐进式 TypeScript 教程，从 30 行调用 LLM 到 750 行完整 Coding Agent",
+          "手写 AI 编程智能体，从 30 行调用 LLM 到 750 行完整 AI Coding Agent。涵盖 Agent Loop、Tool Use、上下文管理、权限系统、多 Agent 协作。TypeScript 实现。",
         provider: {
           "@type": "Organization",
           name: "happydog-intj",
@@ -75,11 +78,11 @@ export default defineConfig({
         inLanguage: "zh-CN",
         isAccessibleForFree: true,
         url: SITE_URL,
-        numberOfCredits: 18,
+        numberOfCredits: 24,
         hasCourseInstance: {
           "@type": "CourseInstance",
           courseMode: "online",
-          courseWorkload: "PT20H",
+          courseWorkload: "PT30H",
         },
       }),
     ],
