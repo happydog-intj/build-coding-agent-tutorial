@@ -12,6 +12,7 @@ export default defineConfig({
     "理解 Claude Code 原理的 24 章实战教程。从 30 行调用 LLM 到 750 行完整 AI 编程智能体，手写实现 Agent Loop、Tool Use、上下文管理。TypeScript 实现。",
   lang: "zh-CN",
   base: isVercel ? "/" : "/build-coding-agent-tutorial/",
+  cleanUrls: isVercel,
 
   sitemap: {
     hostname: isVercel

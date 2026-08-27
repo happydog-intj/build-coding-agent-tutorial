@@ -14,4 +14,5 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
+Sitemap: https://build-coding-agent-tutorial.vercel.app/sitemap.xml
 Sitemap: https://happydog-intj.github.io/build-coding-agent-tutorial/sitemap.xml
