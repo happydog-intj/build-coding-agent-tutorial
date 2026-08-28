@@ -1,0 +1,10 @@
+{
+  "name": "demo-20-cli-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第20章：CLI工具扩展 — Agent最自然的能力接口",
+  "scripts": { "start": "tsx main.ts" },
+  "dependencies": { "@earendil-works/pi-ai": "^0.84.1" },
+  "devDependencies": { "tsx": "4.19.4", "typescript": "5.8.3" }
+}

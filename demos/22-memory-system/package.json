@@ -1,0 +1,10 @@
+{
+  "name": "demo-22-memory-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第22章：跨会话记忆 — 让Agent越用越聪明",
+  "scripts": { "start": "tsx main.ts" },
+  "dependencies": { "@earendil-works/pi-ai": "^0.84.1" },
+  "devDependencies": { "tsx": "4.19.4", "typescript": "5.8.3" }
+}

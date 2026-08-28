@@ -23,6 +23,12 @@
 | `15-evaluation/` | 第 15 章 | ❌* | 自动化评测两层体系 |
 | `16-system-prompt/` | 第 16 章 | ❌ | 结构化 prompt + 状态栏 + 防注入 |
 | `17-harness/` | 第 17 章 | ❌ | 重试 / 验证 / 防死循环 / Proposer-Reviewer |
+| `18-permission-system/` | 第 18 章 | ❌ | 分层权限 / allowlist / denylist / 路径沙箱 |
+| `19-hooks-system/` | 第 19 章 | ❌ | 生命周期 Hooks / 审计 / 过滤 / 自动修复 |
+| `20-cli-tools/` | 第 20 章 | ❌ | Agent 友好 CLI / 结构化输出 / 工具发现 |
+| `21-parallel-and-cost/` | 第 21 章 | ❌ | 并行执行 / 超时 / 取消 / Token 预算 |
+| `22-memory-system/` | 第 22 章 | ❌ | 会话记忆 / 持久记忆 / 压缩锚点 |
+| `23-multi-agent/` | 第 23 章 | ❌ | Coordinator + Worker / 任务分解 / 并行 |
 
 ## 快速开始
 
@@ -44,7 +50,7 @@ OPENAI_API_KEY=sk-xxx npx tsx main.ts
 
 建议按顺序阅读教程文档（`docs/tutorials/`），同时运行对应的 demo 加深理解。
 
-第 05 章（Mock Testing）、第 12 章（Context Management）、第 16 章（System Prompt）和第 17 章（Harness）不需要 API key，适合离线学习。
+第 05 章（Mock Testing）、第 12 章（Context Management）、第 16 章（System Prompt）、第 17 章（Harness）以及第 18-23 章（Part V 全部）不需要 API key，适合离线学习。
 
 第 15 章（Evaluation）的逻辑评测层不需要 API key（标注 ❌*），能力评测层可选需要 key。
 
