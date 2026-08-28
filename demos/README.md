@@ -13,7 +13,7 @@
 | `05-mock-testing/` | 第 05 章 | ❌ | 录播模型，确定性测试 |
 | `06-tool-use/` | 第 06 章 | ✅ | 手动完成一次工具调用流程 |
 | `07-agent-loop/` | 第 07 章 | ✅ | while 循环自主多步任务 |
-| `08-core-tools/` | 第 08 章 | ✅ | 完整 4 工具 Coding Agent |
+| `08-core-tools/` | 第 08 章 | ✅ | 完整 5 工具 Coding Agent |
 | `09-session-persistence/` | 第 09 章 | ✅ | JSONL 持久化 + 会话恢复 |
 | `10-stateful-agent/` | 第 10 章 | ✅ | abort / steering / 重入保护 |
 | `11-session-tree/` | 第 11 章 | ✅ | 分支、fork、回溯、切换 |

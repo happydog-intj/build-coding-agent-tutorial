@@ -1,10 +1,11 @@
 /**
- * 第 08 章：核心工具 — read / write / edit / bash
+ * 第 08 章：核心工具 — read / write / edit / bash / search
  *
- * 完整的 4 工具 Coding Agent。可以：
+ * 完整的 5 工具 Coding Agent。可以：
  * - 读取文件（带行号、支持分段）
  * - 创建文件（自动建目录）
  * - 编辑文件（字符串精确匹配替换）
+ * - 搜索文件（正则搜索，定位代码位置）
  * - 执行命令（timeout + 中间截断）
  *
  * 运行方式：
@@ -19,7 +20,7 @@
 import { builtinModels, getBuiltinModel } from "@earendil-works/pi-ai/providers/all";
 import type { Context, Message, Tool, AssistantMessageEventStream } from "@earendil-works/pi-ai";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { exec } from "node:child_process";
+import { exec, execSync } from "node:child_process";
 import { resolve, dirname } from "node:path";
 
 // ─── 初始化 ──────────────────────────────────────────────────────────────────────
@@ -141,6 +142,34 @@ const tools: MiniTool[] = [
     },
   },
 
+  // ── search_files ──
+  {
+    name: "search_files",
+    description: "Search file contents using regex. Returns matching lines with file paths and line numbers. Use to locate code before editing.",
+    parameters: {
+      type: "object",
+      properties: {
+        pattern: { type: "string", description: "Regex pattern to search for" },
+        path: { type: "string", description: "Directory to search in (default: current dir)" },
+        include: { type: "string", description: "File glob to include (e.g. '*.ts')" },
+      },
+      required: ["pattern"],
+    },
+    async execute(params) {
+      const dir = params.path ?? ".";
+      const includeFlag = params.include ? `--include='${params.include}'` : "";
+      try {
+        const output = execSync(
+          `grep -rn ${includeFlag} '${params.pattern}' '${dir}' 2>/dev/null | head -50`,
+          { encoding: "utf-8", timeout: 10_000 }
+        );
+        return { content: output || "(no matches)" };
+      } catch {
+        return { content: "(no matches)" };
+      }
+    },
+  },
+
   // ── bash ──
   {
     name: "bash",
@@ -214,12 +243,13 @@ async function runAgent(prompt: string): Promise<void> {
 function formatArgs(name: string, args: any): string {
   if (name === "bash") return args.command?.slice(0, 60) ?? "";
   if (name === "read_file" || name === "write_file" || name === "edit_file") return args.path ?? "";
+  if (name === "search_files") return `${args.pattern}${args.path ? " in " + args.path : ""}`;
   return JSON.stringify(args).slice(0, 60);
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────────
 
-console.log(`\x1b[36m第 08 章 Demo：Core Tools Agent\x1b[0m [${model.id}]\n`);
+console.log(`\x1b[36m第 08 章 Demo：Core Tools Agent (5 tools)\x1b[0m [${model.id}]\n`);
 
 const prompt = process.argv[2] ?? "创建一个 /tmp/demo-hello.ts，内容是 console.log('Hello from Agent!')，然后用 npx tsx 运行它";
 console.log(`\x1b[90mUser: ${prompt}\x1b[0m\n`);
