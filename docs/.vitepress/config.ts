@@ -185,6 +185,7 @@ export default defineConfig({
       {
         text: "附录",
         items: [
+          { text: "📖 全部章节目录", link: "/tutorials/README" },
           { text: "推荐阅读", link: "/tutorials/24-further-reading" },
           { text: "FAQ", link: "/faq" },
         ],

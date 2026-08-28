@@ -1,137 +1,107 @@
-# 从零构建 Coding Agent — 教程目录
+---
+title: "全部章节目录 — 从零实现 AI Coding Agent"
+description: "24 章完整教程目录与简介：从调用 LLM 到实现完整的 AI 编程智能体"
+---
 
-> 18 章渐进式教程，从 "30 行调用一次 LLM" 到 "750 行完整 Coding Agent"。
+# 全部章节目录
+
+> **Coding Agent = LLM + Protocol + Loop + Tools + State**
 >
-> 核心公式：**Coding Agent = LLM + Protocol + Loop + Tools + State**
-
-## 目标读者
-
-- 有 TypeScript / Node.js 基础
-- 用过 ChatGPT 但没写过 Agent
-- 想理解 Claude Code / Cursor / Cline 背后的原理
-
-## 全局结构
-
-```
-Part 0  序章（1 章）        — 建立全局心智模型
-Part I  模型与协议（5 章）  — 从调用到协议边界
-Part II 工具与循环（3 章）  — 闭合 Agent 核心
-Part III 持久与可靠（4 章） — 让 Agent 可靠
-Part IV 扩展与验证（5 章） — 从核心到产品
-```
+> 本教程共 24 章，分为 5 个阶段，从 30 行调用一次 LLM 到 750 行完整 Coding Agent，逐步拆解 AI 编程智能体的核心原理。
 
 ---
 
 ## Part 0 · 序章
 
-| # | 标题 | 解决的问题 |
-|---|------|-----------|
-| 00 | [观察一次完整的 Agent 运行](./00-observe-full-run.md) | 在动手之前，先看见全貌 — 一次请求怎样走完闭环？ |
+| # | 章节 | 简介 |
+|---|------|------|
+| 00 | [观察一次完整的 Agent 运行](./00-observe-full-run) | 在写代码之前先看全貌：一次 "读取文件并总结" 的请求如何走完 LLM 调用 → 工具执行 → 结果返回的完整闭环。建立直觉，理解 Agent 不是魔法，就是一个循环。 |
 
 ---
 
 ## Part I · 模型与协议
 
-| # | 标题 | 解决的问题 |
-|---|------|-----------|
-| 01 | [Hello LLM — 30 行代码调用大模型](./01-hello-llm.md) | 如何用代码调用 LLM 并获取回复？ |
-| 02 | [EventStream 事件流 — 流式输出的秘密](./02-event-stream.md) | 等 10 秒才看到回复太痛苦了，如何逐字实时显示？ |
-| 03 | [多轮对话 — 消息协议与记忆](./03-multi-turn.md) | 如何实现多轮对话？LLM 怎么记住上下文？ |
-| 04 | [多模型适配 — 一套代码切换不同厂商](./04-multi-model-adapter.md) | Anthropic 和 OpenAI 格式完全不同，如何用同一套代码切换？ |
-| 05 | [模拟测试 — 不花钱验证 Agent 逻辑](./05-mock-testing.md) | 每次测试都要调真实 API？太慢太贵，如何脱离真模型验证？ |
+> 核心问题：如何调用 LLM？如何多轮对话？如何适配不同厂商？
+
+| # | 章节 | 简介 |
+|---|------|------|
+| 01 | [Hello LLM](./01-hello-llm) | 30 行 TypeScript 代码调用 Claude / GPT API 并获取回复。构建 Agent 的第一步——确认你能用代码拿到模型的输出。 |
+| 02 | [EventStream 事件流](./02-event-stream) | 实现流式输出，让模型回答逐字显示。理解 Server-Sent Events 协议和逐 token 渲染机制。 |
+| 03 | [多轮对话](./03-multi-turn) | 模型为什么不记得上一句话？解答 messages 数组累积、角色区分、上下文传递——多轮对话的本质是"每次都把聊天记录全发过去"。 |
+| 04 | [多模型适配](./04-multi-model-adapter) | Anthropic 和 OpenAI 的 API 格式完全不同。用适配器模式实现一套代码无缝切换不同厂商。 |
+| 05 | [模拟测试](./05-mock-testing) | 每次测试都调真实 API 太慢太贵。用 ScriptedModel 预设响应做确定性测试，零 API 费用验证 Agent 逻辑。 |
 
 ---
 
 ## Part II · 工具与循环
 
-| # | 标题 | 解决的问题 |
-|---|------|-----------|
-| 06 | [Tool Use 工具调用 — 让 LLM 调用函数](./06-tool-use.md) | LLM 如何"动手"？一条工具调用怎样变成配对结果？ |
-| 07 | [Agent Loop 循环引擎 — 从一次调用到自主循环](./07-agent-loop.md) | 如果 LLM 需要连续调用多个工具，如何让它自主工作直到完成？ |
-| 08 | [核心工具 — read / write / edit / bash](./08-core-tools.md) | Coding Agent 最少需要哪些工具？怎么实现？ |
+> 核心问题：如何让 LLM 调用函数？如何实现 Agent Loop？
+
+| # | 章节 | 简介 |
+|---|------|------|
+| 06 | [Tool Use 工具调用](./06-tool-use) | LLM 只能生成文本，怎样让它"做事"？实现工具调用协议：JSON Schema 声明工具、解析 tool_call、配对返回 tool_result。 |
+| 07 | [Agent Loop 循环引擎](./07-agent-loop) | 从"一次调用"到"自主循环"。用 while 循环实现 Agent 的核心：LLM 自主决定调用工具 → 执行 → 反馈 → 直到任务完成。这是整个教程最关键的一章。 |
+| 08 | [核心工具](./08-core-tools) | 实现 Coding Agent 的五个核心工具：read_file、write_file、edit_file、bash、search_files——覆盖完整编码闭环。 |
 
 ---
 
 ## Part III · 持久与可靠
 
-| # | 标题 | 解决的问题 |
-|---|------|-----------|
-| 09 | [会话持久化 — JSONL 崩溃安全存储](./09-session-persistence.md) | 关掉终端对话就丢了，如何保存和恢复？ |
-| 10 | [有状态 Agent — abort、steering 与重入](./10-stateful-agent.md) | 用户按了 Ctrl+C 怎么办？运行中如何注入新指令？ |
-| 11 | [会话树 — 分支、回溯与 DAG](./11-session-tree.md) | 线性会话只有一条路，如何支持"回到之前某个点重新对话"？ |
-| 12 | [上下文窗口管理 — 历史不动，上下文按预算重建](./12-context-management.md) | 对话越来越长，超出模型的上下文窗口怎么办？ |
+> 核心问题：如何保存会话？如何管理上下文窗口？
+
+| # | 章节 | 简介 |
+|---|------|------|
+| 09 | [会话持久化](./09-session-persistence) | 关掉终端对话就丢了？用 JSONL 格式逐条追加保存消息，实现崩溃安全的会话存储与恢复。 |
+| 10 | [有状态 Agent](./10-stateful-agent) | 处理真实交互场景：用户按 Ctrl+C 怎么中断？运行中如何注入新指令（steering）？如何防止并发重入？ |
+| 11 | [会话树](./11-session-tree) | 从线性对话到树形结构。支持分支、回溯、fork 的会话管理——想回到之前某个节点重新开始。 |
+| 12 | [上下文窗口管理](./12-context-management) | 对话越来越长超出窗口怎么办？区分 Session 与 Context，按 token 预算从后往前保留消息，利用 Prompt Cache 优化性能。 |
 
 ---
 
 ## Part IV · 扩展与验证
 
-| # | 标题 | 解决的问题 |
-|---|------|-----------|
-| 13 | [扩展系统 — 不污染核心的产品化](./13-extension-system.md) | 如何在不修改 Agent Loop 代码的前提下添加新能力？ |
-| 14 | [打磨 — 从 Demo 到可用产品](./14-polish.md) | 如何让 agent 从"能跑"变成"好用"？ |
-| 15 | [评测 — 证明你的 Agent 能工作](./15-evaluation.md) | 如何客观验证 agent 的能力？ |
-| 16 | [System Prompt 工程 — 从一行字符串到结构化指令](./16-system-prompt-engineering.md) | 如何设计好的 system prompt？如何防注入？ |
-| 17 | [Harness 工程 — 模型不可靠时的工程补救](./17-harness.md) | 模型会幻觉、死循环、过早终止，怎么办？ |
+> 核心问题：如何扩展能力？如何评测？如何防止幻觉？
+
+| # | 章节 | 简介 |
+|---|------|------|
+| 13 | [扩展系统](./13-extension-system) | 怎样在不修改 Agent Loop 代码的前提下添加新能力？用事件系统和拦截器模式实现权限控制、知识注入等扩展。 |
+| 14 | [打磨](./14-polish) | 从 "能跑" 到 "好用"：Banner、颜色、进度显示、错误提示、Spinner——CLI 产品体验的最后一公里。 |
+| 15 | [评测](./15-evaluation) | "试了一次能跑" 不是可靠性证明。用 EvalCase 结构实现自动化评测，包括 Pass@k 指标和 LLM-as-Judge。 |
+| 16 | [System Prompt 工程](./16-system-prompt-engineering) | 从一行 "You are a coding assistant" 到上百行结构化指令。设计分段组织的 System Prompt、动态注入、防 prompt injection。 |
+| 17 | [Harness 工程](./17-harness) | 模型会幻觉、会死循环、会过早放弃。Harness 是 Agent Loop 外层的控制层——最大迭代数、连续错误检测、Proposer-Reviewer 模式。 |
+
+---
+
+## Part V · 生产级特性
+
+> 核心问题：如何让 Agent 安全、高效、可协作？
+
+| # | 章节 | 简介 |
+|---|------|------|
+| 18 | [权限系统](./18-permission-system) | Agent 能执行 shell 命令，不加约束就是灾难。实现分层权限模式、工具分类、allowlist/denylist、用户确认流程。 |
+| 19 | [Hooks 事件系统](./19-hooks-system) | 在 Agent 生命周期的关键节点打开"窗口"——让外部逻辑观察、干预、改变行为，而不修改核心代码。 |
+| 20 | [CLI 工具扩展](./20-cli-tools) | Agent 有 bash 工具意味着整个命令行生态都是工具箱。为 Agent 设计友好的 CLI 接口、结构化输出、工具发现机制。 |
+| 21 | [并行执行与成本控制](./21-parallel-and-cost) | 模型一次返回多个工具调用，串行执行浪费时间。实现并行执行引擎、取消传播、Token 用量追踪与预算控制。 |
+| 22 | [跨会话记忆](./22-memory-system) | 上下文压缩是遗忘，记忆系统是找回。实现会话笔记提取、持久记忆文件、记忆注入——让 Agent 越用越聪明。 |
+| 23 | [多 Agent 协作](./23-multi-agent) | 一个 Agent 处理复杂任务容易迷失。把大问题拆给专门角色：Coordinator 调度、Worker 执行、消息传递、并行子代理。 |
 
 ---
 
 ## 附录
 
-| # | 标题 | 说明 |
+| # | 章节 | 简介 |
 |---|------|------|
-| — | [推荐阅读 — 下一步](./24-further-reading.md) | 超出本教程范围的高级话题指引 |
+| 24 | [推荐阅读](./24-further-reading) | 超出本教程范围的高级话题指引：RAG 检索增强、模型后训练、Computer Use、安全对齐等进阶方向。 |
 
 ---
 
-## 章节依赖图
+## 学习路线建议
 
-```
-00 序章（观察）
- ↓
-01 Hello LLM → 02 EventStream 事件流 → 03 多轮对话
-                                          ↓
-                              04 多模型适配 → 05 模拟测试
-                                                  ↓
-                     06 Tool Use 工具调用 → 07 Agent Loop 循环引擎 → 08 核心工具
-                                                                       ↓
-                              09 会话持久化 → 10 有状态 Agent → 11 会话树
-                                                                 ↓
-                                          12 上下文管理 → 13 扩展系统
-                                                              ↓
-                                                    14 打磨 → 15 评测
-                                                              ↓
-                                          16 System Prompt 工程 → 17 Harness 工程
-```
+**最短路径（理解核心原理）：** 第 0 → 1 → 6 → 7 → 8 章，约 2 小时
 
-## 每章结构
+**完整路径（实现产品级 Agent）：** 第 0-23 章，约 20-30 小时
 
-每篇教程遵循统一格式：
-
-1. **问题** — 一句话：这章要解决什么
-2. **概念** — 图示 + 最小解释 + 不变量
-3. **代码** — 完整可运行的增量代码，带注释
-4. **运行验证** — 读者能执行什么命令验证效果
-5. **为什么这样设计** — 与"常见但错误"的做法对比
-6. **下一章预告** — 引出新问题
-
-## 最终产出
-
-跟完全部 16 章后，你将拥有一个 750 行、独立可运行的 Coding Agent：
-
-```
-examples/mini-pi-coding-agent/
-├── package.json
-├── tsconfig.json
-├── README.md
-└── src/
-    ├── index.ts            # CLI + Runtime 组装（~150 行）
-    ├── agent-loop.ts       # Agent Loop 循环引擎（~165 行）
-    ├── provider.ts         # 多模型适配（~90 行）
-    ├── session.ts          # JSONL 持久化（~80 行）
-    └── tools/
-        ├── index.ts        # 工具注册（~12 行）
-        ├── read.ts         # 读文件（~54 行）
-        ├── write.ts        # 写文件（~34 行）
-        ├── edit.ts         # 编辑（~75 行）
-        └── bash.ts         # 命令（~90 行）
-```
+**按需选读：**
+- 只关心 "Agent 是什么" → 第 0、7 章
+- 只关心 "怎么接 API" → 第 1-5 章
+- 只关心 "生产化" → 第 13-23 章
